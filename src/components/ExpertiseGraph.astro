@@ -1,0 +1,194 @@
+---
+import { siteConfig } from "../config";
+
+// Position nodes in a visually pleasing layout
+const nodePositions: Record<string, {x: number; y: number}> = {
+  "Knowledge Graphs": { x: 400, y: 200 },
+  "Ontology Engineering": { x: 250, y: 120 },
+  "RDF": { x: 550, y: 120 },
+  "SPARQL": { x: 600, y: 280 },
+  "OWL": { x: 400, y: 60 },
+  "RDFS": { x: 520, y: 40 },
+  "NLP / LLM": { x: 200, y: 280 },
+  "Python": { x: 120, y: 360 },
+  "Protégé": { x: 150, y: 180 },
+  "GraphDB": { x: 650, y: 180 },
+  "RDFlib": { x: 320, y: 350 },
+  "RML / R2RML": { x: 500, y: 340 },
+  "SHACL": { x: 350, y: 280 },
+};
+
+// Build edges from connections
+const edges: {from: string; to: string}[] = [];
+const edgeSet = new Set<string>();
+siteConfig.expertise.forEach(skill => {
+  skill.connections.forEach(conn => {
+    const key = [skill.name, conn].sort().join('|');
+    if (!edgeSet.has(key) && nodePositions[conn]) {
+      edgeSet.add(key);
+      edges.push({ from: skill.name, to: conn });
+    }
+  });
+});
+---
+
+<section id="expertise" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface-light);">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);">Expertise</h2>
+    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-12" style="color: var(--color-primary-dark);">
+      Knowledge Architecture
+    </p>
+
+    <!-- Desktop: SVG Knowledge Graph -->
+    <div class="reveal stagger-2 hidden md:block" id="kg-container">
+      <svg viewBox="0 0 780 420" class="w-full" id="knowledge-graph" aria-label="Interactive knowledge graph showing skills and their connections">
+        <!-- Edges -->
+        {edges.map((edge, i) => {
+          const from = nodePositions[edge.from];
+          const to = nodePositions[edge.to];
+          if (!from || !to) return null;
+          return (
+            <line
+              class="kg-edge"
+              x1={from.x} y1={from.y}
+              x2={to.x} y2={to.y}
+              stroke="var(--color-primary-light)"
+              stroke-width="1"
+              opacity="0.4"
+              style={`animation-delay: ${i * 50}ms;`}
+              data-from={edge.from}
+              data-to={edge.to}
+            />
+          );
+        })}
+
+        <!-- Nodes -->
+        {siteConfig.expertise.map((skill, i) => {
+          const pos = nodePositions[skill.name];
+          if (!pos) return null;
+          const radius = skill.level === 5 ? 32 : skill.level === 4 ? 26 : 22;
+          const fillColor = skill.category === 'core' ? 'var(--color-primary-dark)' :
+                           skill.category === 'semantic' ? 'var(--color-primary)' :
+                           skill.category === 'ai' ? 'var(--color-accent)' :
+                           'var(--color-primary-light)';
+          const textColor = skill.category === 'tools' ? 'var(--color-primary-dark)' : '#fff';
+          return (
+            <g class="kg-node cursor-pointer" data-skill={skill.name}
+               style={`animation-delay: ${200 + i * 80}ms;`}>
+              <circle
+                cx={pos.x} cy={pos.y} r={radius}
+                fill={fillColor}
+                opacity="0.9"
+              />
+              <text
+                x={pos.x} y={pos.y}
+                text-anchor="middle"
+                dominant-baseline="middle"
+                fill={textColor}
+                font-size={radius > 28 ? "9" : "8"}
+                font-family="'Space Grotesk', sans-serif"
+                font-weight="500"
+              >
+                {skill.name.length > 14 ? skill.name.split('/').map((part, j) => (
+                  <tspan x={pos.x} dy={j === 0 ? "-5" : "12"}>{part.trim()}</tspan>
+                )) : skill.name}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+
+      <!-- Legend -->
+      <div class="flex items-center justify-center gap-6 mt-6 text-xs" style="color: #888;">
+        <div class="flex items-center gap-1.5">
+          <div class="w-3 h-3 rounded-full" style="background-color: var(--color-primary-dark);"></div>
+          <span>Core</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-3 h-3 rounded-full" style="background-color: var(--color-primary);"></div>
+          <span>Semantic Web</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-3 h-3 rounded-full" style="background-color: var(--color-accent);"></div>
+          <span>AI / NLP</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <div class="w-3 h-3 rounded-full" style="background-color: var(--color-primary-light);"></div>
+          <span>Tools</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile: Skill list with level bars -->
+    <div class="md:hidden space-y-3">
+      {siteConfig.expertise.map((skill, i) => (
+        <div class={`reveal stagger-${Math.min(i + 1, 6)} flex items-center gap-3 p-3 rounded-lg`}
+             style="background-color: var(--color-surface); border: 1px solid var(--color-primary-light);">
+          <div class="flex-1">
+            <div class="text-sm font-medium" style="color: var(--color-primary-dark);">{skill.name}</div>
+          </div>
+          <div class="flex gap-1">
+            {Array.from({length: 5}).map((_, j) => (
+              <div class={`w-2 h-5 rounded-sm ${j < skill.level ? '' : 'opacity-15'}`}
+                   style={`background-color: ${
+                     skill.category === 'core' ? 'var(--color-primary-dark)' :
+                     skill.category === 'semantic' ? 'var(--color-primary)' :
+                     skill.category === 'ai' ? 'var(--color-accent)' :
+                     'var(--color-primary-light)'
+                   };`}></div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Animate knowledge graph on scroll
+  const kgContainer = document.getElementById('kg-container');
+  if (kgContainer) {
+    const kgObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          kgContainer.querySelectorAll('.kg-node, .kg-edge').forEach(el => {
+            el.classList.add('visible');
+          });
+          kgObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    kgObserver.observe(kgContainer);
+  }
+
+  // Hover interaction: highlight connected nodes
+  document.querySelectorAll('.kg-node').forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      const skillName = node.getAttribute('data-skill');
+      // Dim all
+      document.querySelectorAll('.kg-node').forEach(n => (n as HTMLElement).style.opacity = '0.3');
+      document.querySelectorAll('.kg-edge').forEach(e => (e as HTMLElement).style.opacity = '0.1');
+      // Highlight this node
+      (node as HTMLElement).style.opacity = '1';
+      // Highlight connected edges and nodes
+      document.querySelectorAll('.kg-edge').forEach(edge => {
+        const from = edge.getAttribute('data-from');
+        const to = edge.getAttribute('data-to');
+        if (from === skillName || to === skillName) {
+          (edge as HTMLElement).style.opacity = '0.8';
+          (edge as HTMLElement).style.strokeWidth = '2';
+          const connectedName = from === skillName ? to : from;
+          document.querySelector(`.kg-node[data-skill="${connectedName}"]`)?.setAttribute('style', 'opacity: 1;');
+        }
+      });
+    });
+
+    node.addEventListener('mouseleave', () => {
+      document.querySelectorAll('.kg-node').forEach(n => (n as HTMLElement).style.opacity = '');
+      document.querySelectorAll('.kg-edge').forEach(e => {
+        (e as HTMLElement).style.opacity = '';
+        (e as HTMLElement).style.strokeWidth = '';
+      });
+    });
+  });
+</script>

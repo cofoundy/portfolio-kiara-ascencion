@@ -1,0 +1,54 @@
+---
+import { siteConfig } from "../config";
+---
+
+<section id="about" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface);">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);">About</h2>
+    <div class="reveal stagger-1 grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
+      <!-- Bio -->
+      <div class="md:col-span-2">
+        <p class="text-base md:text-lg leading-relaxed" style="color: #333;">
+          {siteConfig.aboutMe}
+        </p>
+        <!-- Languages -->
+        <div class="mt-8">
+          <h3 class="text-sm uppercase tracking-wider font-medium mb-4" style="color: var(--color-primary);">Languages</h3>
+          <div class="flex flex-wrap gap-3">
+            {siteConfig.languages.map((lang) => (
+              <div class="flex items-center gap-2 px-3 py-1.5 rounded-full text-sm"
+                   style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+                <span style="color: var(--color-primary-dark);">{lang.name}</span>
+                <div class="flex gap-0.5">
+                  {Array.from({length: 5}).map((_, i) => (
+                    <div class={`w-1.5 h-1.5 rounded-full ${i < lang.level ? '' : 'opacity-20'}`}
+                         style={`background-color: ${i < lang.level ? 'var(--color-accent)' : 'var(--color-primary-light)'};`}></div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Credentials sidebar -->
+      <div class="space-y-4">
+        <div class="p-4 rounded-xl" style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+          <div class="text-xs uppercase tracking-wider mb-2" style="color: var(--color-primary-light);">Current</div>
+          <div class="font-medium text-sm" style="color: var(--color-primary-dark);">metaphacts GmbH</div>
+          <div class="text-xs mt-1" style="color: #777;">Technical Consultant</div>
+        </div>
+        <div class="p-4 rounded-xl" style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+          <div class="text-xs uppercase tracking-wider mb-2" style="color: var(--color-primary-light);">Previous</div>
+          <div class="font-medium text-sm" style="color: var(--color-primary-dark);">Fraunhofer IIS</div>
+          <div class="text-xs mt-1" style="color: #777;">External Consultant</div>
+        </div>
+        <div class="p-4 rounded-xl" style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+          <div class="text-xs uppercase tracking-wider mb-2" style="color: var(--color-primary-light);">Certification</div>
+          <div class="font-medium text-sm" style="color: var(--color-primary-dark);">Scrum Master I</div>
+          <div class="text-xs mt-1" style="color: #777;">Scrum.org, 2024</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

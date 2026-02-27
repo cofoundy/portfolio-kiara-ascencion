@@ -1,0 +1,90 @@
+---
+import { siteConfig } from "../config";
+---
+
+<!-- Top bar (visible initially) -->
+<nav class="w-full py-4 px-6 flex items-center justify-between" id="top-nav">
+  <a href="#" class="font-['Space_Grotesk'] text-sm font-medium tracking-wide" style="color: var(--color-primary-dark);">
+    K.A.
+  </a>
+  <div class="hidden md:flex items-center gap-6 text-sm" style="color: var(--color-primary);">
+    <a href="#about" class="link-underline hover:opacity-80 transition-opacity">About</a>
+    <a href="#expertise" class="link-underline hover:opacity-80 transition-opacity">Expertise</a>
+    <a href="#research" class="link-underline hover:opacity-80 transition-opacity">Research</a>
+    <a href="#experience" class="link-underline hover:opacity-80 transition-opacity">Experience</a>
+    <a href="#beyond" class="link-underline hover:opacity-80 transition-opacity">Beyond</a>
+    <a href="#contact" class="link-underline hover:opacity-80 transition-opacity">Contact</a>
+  </div>
+  <button id="mobile-menu-btn" class="md:hidden p-2" aria-label="Toggle menu">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+      <line x1="3" y1="6" x2="17" y2="6" />
+      <line x1="3" y1="10" x2="17" y2="10" />
+      <line x1="3" y1="14" x2="17" y2="14" />
+    </svg>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" class="fixed inset-0 z-50 hidden" style="background-color: var(--color-surface);">
+  <div class="flex flex-col items-center justify-center h-full gap-8">
+    <a href="#about" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">About</a>
+    <a href="#expertise" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">Expertise</a>
+    <a href="#research" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">Research</a>
+    <a href="#experience" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">Experience</a>
+    <a href="#beyond" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">Beyond</a>
+    <a href="#contact" class="text-xl font-medium mobile-link" style="color: var(--color-primary-dark);">Contact</a>
+    <button id="mobile-close-btn" class="mt-8 text-sm" style="color: var(--color-primary);">Close</button>
+  </div>
+</div>
+
+<!-- Floating pill nav (appears on scroll) -->
+<div id="floating-nav" class="fixed top-4 left-1/2 -translate-x-1/2 z-40 hidden opacity-0">
+  <div class="flex items-center gap-4 px-6 py-2.5 rounded-full shadow-lg backdrop-blur-md text-sm"
+       style="background-color: rgba(250, 250, 248, 0.92); border: 1px solid var(--color-primary-light);">
+    <a href="#" class="font-['Space_Grotesk'] font-medium" style="color: var(--color-primary-dark);">K.A.</a>
+    <span class="w-px h-4" style="background-color: var(--color-primary-light);"></span>
+    <a href="#about" class="hover:opacity-70 transition-opacity" style="color: var(--color-primary);">About</a>
+    <a href="#expertise" class="hover:opacity-70 transition-opacity" style="color: var(--color-primary);">Expertise</a>
+    <a href="#research" class="hover:opacity-70 transition-opacity" style="color: var(--color-primary);">Research</a>
+    <a href="#experience" class="hover:opacity-70 transition-opacity" style="color: var(--color-primary);">Experience</a>
+    <a href="#contact" class="hover:opacity-70 transition-opacity" style="color: var(--color-primary);">Contact</a>
+  </div>
+</div>
+
+<script>
+  // Floating nav on scroll
+  const floatingNav = document.getElementById('floating-nav');
+  let lastScrollY = 0;
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    if (scrollY > 400) {
+      floatingNav?.classList.remove('hidden');
+      floatingNav?.classList.add('header-visible');
+    } else {
+      floatingNav?.classList.add('hidden');
+      floatingNav?.classList.remove('header-visible');
+    }
+    lastScrollY = scrollY;
+  });
+
+  // Mobile menu
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileClose = document.getElementById('mobile-close-btn');
+
+  mobileBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+
+  const closeMenu = () => {
+    mobileMenu?.classList.add('hidden');
+    document.body.style.overflow = '';
+  };
+
+  mobileClose?.addEventListener('click', closeMenu);
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+</script>

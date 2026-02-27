@@ -1,0 +1,97 @@
+---
+import { siteConfig } from "../config";
+---
+
+<section id="research" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface);">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);">Research</h2>
+    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-12" style="color: var(--color-primary-dark);">
+      Projects
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {siteConfig.research.map((project, i) => (
+        <div class={`reveal stagger-${i + 1} card-hover p-6 rounded-xl`}
+             style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-lg font-bold" style="color: var(--color-primary-dark);">{project.title}</h3>
+            {project.funder && (
+              <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full whitespace-nowrap ml-2"
+                    style="background-color: var(--color-primary-light); color: var(--color-primary-dark);">
+                {project.funder.includes('DFG') ? 'DFG' : 'Funded'}
+              </span>
+            )}
+          </div>
+          <p class="text-xs mb-2" style="color: var(--color-primary);">{project.role}</p>
+          <p class="text-xs mb-1" style="color: #999;">{project.period}</p>
+          <p class="text-sm mt-3 leading-relaxed" style="color: #555;">{project.description}</p>
+          <div class="flex flex-wrap gap-1.5 mt-4">
+            {project.tags.map(tag => (
+              <span class="text-[10px] px-2 py-0.5 rounded-full"
+                    style="background-color: var(--color-surface); border: 1px solid var(--color-primary-light); color: var(--color-primary);">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Publications -->
+    <div class="mt-16">
+      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);">Publications</h3>
+      <div class="space-y-4">
+        {siteConfig.publications.map((pub, i) => (
+          <div class={`reveal stagger-${i + 1} flex items-start gap-4 p-4 rounded-lg`}
+               style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+            <span class="text-2xl font-bold font-['Space_Grotesk'] shrink-0" style="color: var(--color-primary-light);">
+              {pub.year}
+            </span>
+            <div class="flex-1 min-w-0">
+              <h4 class="text-sm font-semibold" style="color: var(--color-primary-dark);">{pub.title}</h4>
+              <p class="text-xs mt-1" style="color: #888;">{pub.authors}</p>
+              <div class="flex items-center gap-2 mt-2">
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-medium"
+                      style="background-color: var(--color-primary-dark); color: #fff;">
+                  {pub.venue}
+                </span>
+                {pub.doi && (
+                  <a href={`https://doi.org/${pub.doi}`} target="_blank" rel="noopener"
+                     class="text-[10px] link-underline" style="color: var(--color-accent);">
+                    DOI
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- GitHub repos -->
+    <div class="mt-12">
+      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);">Open Source</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {siteConfig.github.repos.map((repo, i) => (
+          <a href={`https://github.com/Kiaramarnitt/${repo.name}`} target="_blank" rel="noopener"
+             class={`reveal stagger-${i + 1} card-hover block p-4 rounded-lg`}
+             style="background-color: var(--color-surface-light); border: 1px solid var(--color-primary-light);">
+            <div class="flex items-center gap-2 mb-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: var(--color-primary);">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+              </svg>
+              <span class="text-sm font-medium" style="color: var(--color-primary-dark);">{repo.name}</span>
+              {repo.stars > 0 && (
+                <span class="text-[10px] ml-auto" style="color: #999;">&#9733; {repo.stars}</span>
+              )}
+            </div>
+            <p class="text-xs" style="color: #777;">{repo.description}</p>
+            {repo.language && (
+              <span class="text-[10px] mt-2 inline-block" style="color: var(--color-primary-light);">{repo.language}</span>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

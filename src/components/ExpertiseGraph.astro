@@ -1,22 +1,32 @@
 ---
 import { siteConfig } from "../config";
 
-// Position nodes in a visually pleasing layout
+// Node positions — spread out more, bigger canvas
 const nodePositions: Record<string, {x: number; y: number}> = {
-  "Knowledge Graphs": { x: 400, y: 200 },
-  "Ontology Engineering": { x: 250, y: 120 },
-  "RDF": { x: 550, y: 120 },
-  "SPARQL": { x: 600, y: 280 },
-  "OWL": { x: 400, y: 60 },
-  "RDFS": { x: 520, y: 40 },
-  "NLP / LLM": { x: 200, y: 280 },
-  "Python": { x: 120, y: 360 },
-  "Protégé": { x: 150, y: 180 },
-  "GraphDB": { x: 650, y: 180 },
-  "RDFlib": { x: 320, y: 350 },
-  "RML / R2RML": { x: 500, y: 340 },
-  "SHACL": { x: 350, y: 280 },
+  "Knowledge Graphs": { x: 420, y: 220 },
+  "Ontology Engineering": { x: 200, y: 130 },
+  "RDF": { x: 600, y: 110 },
+  "SPARQL": { x: 680, y: 290 },
+  "OWL": { x: 420, y: 60 },
+  "RDFS": { x: 580, y: 40 },
+  "NLP / LLM": { x: 180, y: 310 },
+  "Python": { x: 80, y: 410 },
+  "Protégé": { x: 80, y: 200 },
+  "GraphDB": { x: 750, y: 190 },
+  "RDFlib": { x: 320, y: 390 },
+  "RML / R2RML": { x: 540, y: 370 },
+  "SHACL": { x: 370, y: 310 },
 };
+
+// Pill dimensions based on text length and level
+function getPillSize(name: string, level: number): {w: number; h: number} {
+  const charWidth = 7.5;
+  const padding = 28;
+  const textWidth = name.length * charWidth;
+  const w = Math.max(textWidth + padding, level === 5 ? 90 : 70);
+  const h = level === 5 ? 38 : level === 4 ? 34 : 30;
+  return { w, h };
+}
 
 // Build edges from connections
 const edges: {from: string; to: string}[] = [];
@@ -39,9 +49,9 @@ siteConfig.expertise.forEach(skill => {
       Knowledge Architecture
     </p>
 
-    <!-- Desktop: SVG Knowledge Graph -->
+    <!-- Desktop: SVG Knowledge Graph with pills -->
     <div class="reveal stagger-2 hidden md:block" id="kg-container">
-      <svg viewBox="0 0 780 420" class="w-full" id="knowledge-graph" aria-label="Interactive knowledge graph showing skills and their connections">
+      <svg viewBox="0 0 850 470" class="w-full" id="knowledge-graph" aria-label="Interactive knowledge graph showing skills and their connections">
         <!-- Edges -->
         {edges.map((edge, i) => {
           const from = nodePositions[edge.from];
@@ -54,7 +64,7 @@ siteConfig.expertise.forEach(skill => {
               x2={to.x} y2={to.y}
               stroke="var(--color-primary-light)"
               stroke-width="1"
-              opacity="0.4"
+              opacity="0.35"
               style={`animation-delay: ${i * 50}ms;`}
               data-from={edge.from}
               data-to={edge.to}
@@ -62,36 +72,41 @@ siteConfig.expertise.forEach(skill => {
           );
         })}
 
-        <!-- Nodes -->
+        <!-- Nodes as rounded pills -->
         {siteConfig.expertise.map((skill, i) => {
           const pos = nodePositions[skill.name];
           if (!pos) return null;
-          const radius = skill.level === 5 ? 32 : skill.level === 4 ? 26 : 22;
+          const pill = getPillSize(skill.name, skill.level);
           const fillColor = skill.category === 'core' ? 'var(--color-primary-dark)' :
                            skill.category === 'semantic' ? 'var(--color-primary)' :
                            skill.category === 'ai' ? 'var(--color-accent)' :
                            'var(--color-primary-light)';
           const textColor = skill.category === 'tools' ? 'var(--color-primary-dark)' : '#fff';
+          const fontSize = skill.level === 5 ? 12 : skill.level === 4 ? 11 : 10;
           return (
             <g class="kg-node cursor-pointer" data-skill={skill.name}
                style={`animation-delay: ${200 + i * 80}ms;`}>
-              <circle
-                cx={pos.x} cy={pos.y} r={radius}
+              <rect
+                x={pos.x - pill.w / 2}
+                y={pos.y - pill.h / 2}
+                width={pill.w}
+                height={pill.h}
+                rx={pill.h / 2}
+                ry={pill.h / 2}
                 fill={fillColor}
-                opacity="0.9"
+                opacity="0.92"
               />
               <text
-                x={pos.x} y={pos.y}
+                x={pos.x}
+                y={pos.y + 1}
                 text-anchor="middle"
                 dominant-baseline="middle"
                 fill={textColor}
-                font-size={radius > 28 ? "9" : "8"}
+                font-size={fontSize}
                 font-family="'Space Grotesk', sans-serif"
                 font-weight="500"
               >
-                {skill.name.length > 14 ? skill.name.split('/').map((part, j) => (
-                  <tspan x={pos.x} dy={j === 0 ? "-5" : "12"}>{part.trim()}</tspan>
-                )) : skill.name}
+                {skill.name}
               </text>
             </g>
           );
@@ -165,17 +180,14 @@ siteConfig.expertise.forEach(skill => {
   document.querySelectorAll('.kg-node').forEach(node => {
     node.addEventListener('mouseenter', () => {
       const skillName = node.getAttribute('data-skill');
-      // Dim all
       document.querySelectorAll('.kg-node').forEach(n => (n as HTMLElement).style.opacity = '0.3');
-      document.querySelectorAll('.kg-edge').forEach(e => (e as HTMLElement).style.opacity = '0.1');
-      // Highlight this node
+      document.querySelectorAll('.kg-edge').forEach(e => (e as HTMLElement).style.opacity = '0.08');
       (node as HTMLElement).style.opacity = '1';
-      // Highlight connected edges and nodes
       document.querySelectorAll('.kg-edge').forEach(edge => {
         const from = edge.getAttribute('data-from');
         const to = edge.getAttribute('data-to');
         if (from === skillName || to === skillName) {
-          (edge as HTMLElement).style.opacity = '0.8';
+          (edge as HTMLElement).style.opacity = '0.7';
           (edge as HTMLElement).style.strokeWidth = '2';
           const connectedName = from === skillName ? to : from;
           document.querySelector(`.kg-node[data-skill="${connectedName}"]`)?.setAttribute('style', 'opacity: 1;');

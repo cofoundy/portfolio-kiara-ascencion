@@ -1,5 +1,12 @@
 ---
 import { siteConfig } from "../config";
+
+function formatAuthors(authors: string): string {
+  return authors.replace(
+    /Ascencion Arevalo, K\.M\./g,
+    '<strong style="color: var(--color-primary-dark); font-weight: 600;">Ascencion Arevalo, K.M.</strong>'
+  );
+}
 ---
 
 <section id="research" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface);">
@@ -49,7 +56,7 @@ import { siteConfig } from "../config";
             </span>
             <div class="flex-1 min-w-0">
               <h4 class="text-sm font-semibold" style="color: var(--color-primary-dark);">{pub.title}</h4>
-              <p class="text-xs mt-1" style="color: #888;">{pub.authors}</p>
+              <p class="text-xs mt-1" style="color: #888;" set:html={formatAuthors(pub.authors)} />
               <div class="flex items-center gap-2 mt-2">
                 <span class="text-[10px] px-2 py-0.5 rounded-full font-medium"
                       style="background-color: var(--color-primary-dark); color: #fff;">

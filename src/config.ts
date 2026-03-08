@@ -17,7 +17,7 @@ export const siteConfig = {
 
   stats: [
     { value: "3", label: "Research Projects Led" },
-    { value: "2", label: "Publications" },
+    { value: "3", label: "Publications" },
     { value: "4", label: "Languages Spoken" },
   ],
 
@@ -85,6 +85,15 @@ export const siteConfig = {
       year: 2023,
       doi: "10.1007/978-3-031-47243-5_1",
       location: "Greece",
+    },
+    {
+      title: "RetroWoT: A Method to Integrate Brownfield Devices in the Web of Things",
+      authors: "Dorsch, R., Freund, M., Ascencion Arevalo, K.M., Harth, A.",
+      venue: "IoT 2024",
+      venueFullName: "14th International Conference on the Internet of Things",
+      year: 2024,
+      doi: "10.1145/3703790.3703799",
+      location: "",
     },
     {
       title: "AutOnto: Towards A Semi-Automated Ontology Engineering Methodology",

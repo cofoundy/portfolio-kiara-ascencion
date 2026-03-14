@@ -14,11 +14,11 @@ const iconSvgs: Record<string, string> = {
 
 <section id="beyond" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface);">
   <div class="max-w-5xl mx-auto">
-    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);">Beyond the Graph</h2>
-    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-4" style="color: var(--color-primary-dark);">
+    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);" data-i18n="beyond.heading">Beyond the Graph</h2>
+    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-4" style="color: var(--color-primary-dark);" data-i18n="beyond.subtitle">
       When I'm not building ontologies
     </p>
-    <p class="reveal stagger-2 text-base mb-10 max-w-2xl" style="color: #777;">
+    <p class="reveal stagger-2 text-base mb-10 max-w-2xl" style="color: #777;" data-i18n="beyond.description">
       Outside of work, I'm driven by curiosity — from capturing moments through photography to experimenting with home automation and 3D printing. I love the intersection of creativity and technology.
     </p>
 
@@ -29,7 +29,7 @@ const iconSvgs: Record<string, string> = {
           <div class="flex justify-center mb-3 transition-transform duration-300 group-hover:scale-110"
                style="color: var(--color-primary);"
                set:html={iconSvgs[hobby.icon] || ''} />
-          <span class="text-sm font-medium" style="color: var(--color-primary-dark);">{hobby.label}</span>
+          <span class="text-sm font-medium" style="color: var(--color-primary-dark);" data-i18n={`beyond.${hobby.label}`}>{hobby.label}</span>
         </div>
       ))}
     </div>

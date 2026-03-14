@@ -11,8 +11,8 @@ function formatAuthors(authors: string): string {
 
 <section id="research" class="py-20 px-6 md:px-12 lg:px-20" style="background-color: var(--color-surface);">
   <div class="max-w-5xl mx-auto">
-    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);">Research</h2>
-    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-12" style="color: var(--color-primary-dark);">
+    <h2 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-2" style="color: var(--color-accent);" data-i18n="research.heading">Research</h2>
+    <p class="reveal stagger-1 text-2xl md:text-3xl font-bold mt-4 mb-12" style="color: var(--color-primary-dark);" data-i18n="research.subtitle">
       Projects
     </p>
 
@@ -29,9 +29,9 @@ function formatAuthors(authors: string): string {
               </span>
             )}
           </div>
-          <p class="text-xs mb-2" style="color: var(--color-primary);">{project.role}</p>
+          <p class="text-xs mb-2" style="color: var(--color-primary);" data-i18n={`research.${i}.role`}>{project.role}</p>
           <p class="text-xs mb-1" style="color: #999;">{project.period}</p>
-          <p class="text-sm mt-3 leading-relaxed" style="color: #555;">{project.description}</p>
+          <p class="text-sm mt-3 leading-relaxed" style="color: #555;" data-i18n={`research.${i}.desc`}>{project.description}</p>
           <div class="flex flex-wrap gap-1.5 mt-4">
             {project.tags.map(tag => (
               <span class="text-[10px] px-2 py-0.5 rounded-full"
@@ -46,7 +46,7 @@ function formatAuthors(authors: string): string {
 
     <!-- Publications -->
     <div class="mt-16">
-      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);">Publications</h3>
+      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);" data-i18n="research.publications">Publications</h3>
       <div class="space-y-4">
         {siteConfig.publications.map((pub, i) => (
           <div class={`reveal stagger-${i + 1} flex items-start gap-4 p-4 rounded-lg`}
@@ -77,7 +77,7 @@ function formatAuthors(authors: string): string {
 
     <!-- GitHub repos -->
     <div class="mt-12">
-      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);">Open Source</h3>
+      <h3 class="reveal text-sm uppercase tracking-[0.2em] font-medium mb-6" style="color: var(--color-accent);" data-i18n="research.opensource">Open Source</h3>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         {siteConfig.github.repos.map((repo, i) => (
           <a href={`https://github.com/Kiaramarnitt/${repo.name}`} target="_blank" rel="noopener"

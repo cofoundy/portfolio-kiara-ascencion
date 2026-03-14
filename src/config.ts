@@ -178,6 +178,21 @@ export const siteConfig = {
 
   certifications: [
     {
+      name: "AI metis for AI metis Engineers",
+      issuer: "metaphacts GmbH",
+      year: 2026,
+    },
+    {
+      name: "App Building for Knowledge Graph Application Engineers",
+      issuer: "metaphacts GmbH",
+      year: 2026,
+    },
+    {
+      name: "Visual Modeling for Knowledge Graph Engineers",
+      issuer: "metaphacts GmbH",
+      year: 2026,
+    },
+    {
       name: "Professional Scrum Master I",
       issuer: "Scrum.org",
       year: 2024,
